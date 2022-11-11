@@ -2,10 +2,7 @@ package service;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 
-import javax.jms.Connection;
-import javax.jms.JMSException;
-import javax.jms.Queue;
-import javax.jms.Session;
+import javax.jms.*;
 
 /**
  * @author LiGuanda
@@ -15,10 +12,10 @@ import javax.jms.Session;
  */
 
 
-public class JMSProduceTest {
+public class JMSProduce {
 
 
-    public static final String URL = "tcp://192.168.16.131.8161:61616";
+    public static final String URL = "tcp://192.168.16.131:61616";
     public static final String QUEUE = "IU";
 
     public static void main(String[] args) throws JMSException {
@@ -28,6 +25,15 @@ public class JMSProduceTest {
         connection.start();
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         Queue queue = session.createQueue(QUEUE);
+        MessageProducer producer = session.createProducer(queue);
+        TextMessage message1 = session.createTextMessage("Iu loves Dage");
+        TextMessage message2 = session.createTextMessage("JuJingyi likes Dage");
+        producer.send(message1);
+        producer.send(message2);
+
+        producer.close();
+        session.close();
+        connection.close();
 
 
     }
